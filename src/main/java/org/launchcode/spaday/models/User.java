@@ -7,13 +7,20 @@ import javax.validation.constraints.Size;
 
 public class User {
     @NotBlank
+    @NotNull
     @Size(min = 5, max = 15)
     private String username;
+
     @Email
     private String email;
+
     @NotBlank
+    @NotNull
     @Size(min = 6)
     private String password;
+
+    @NotNull(message="Passwords do not match")
+    private String verifyPassword;
 
     public User() {
 
@@ -48,5 +55,24 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+        this.checkPassword();
+    }
+
+
+    public String getVerifyPassword() {
+        return verifyPassword;
+    }
+
+    public void setVerifyPassword(String verifyPassword) {
+        this.verifyPassword = verifyPassword;
+        this.checkPassword();
+    }
+
+    private void checkPassword() {
+        if (this.password != null
+                && this.verifyPassword != null
+                && !this.password.equals(this.verifyPassword)) {
+            this.verifyPassword = null;
+        }
     }
 }
